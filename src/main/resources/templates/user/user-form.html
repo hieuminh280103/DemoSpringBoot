@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center"><a th:href="@{/home}">Trang chủ</a></h2>
+    <h3 class="text-center">TẠO USER</h3>
+    <hr/>
+    <div th:if="${error1}" class="alert alert-danger">
+        <span th:text="${error1}"></span>
+    </div>
+    <div th:if="${error2}" class="alert alert-danger">
+        <span th:text="${error2}"></span>
+    </div>
+    <div th:if="${success}" class="alert alert-success">
+        <span th:text="${success}"></span>
+        <a th:href="@{/home}">Quay lại trang chủ</a>
+    </div>
+    <form action="#" th:action="@{/user/save}" th:object="${user}" method="POST">
+        <input type="text" th:field="*{username}" placeholder="Nhập username" required
+               class="form-control w-25 mb-2">
+        <input type="password" th:field="*{password}" placeholder="Nhập password" required
+               class="form-control w-25 mb-2">
+        <!--danh dau * de lien ket voi th:object -->
+        <input type="text" th:field="*{role}" placeholder="Nhập role" required
+               class="form-control w-25 mb-2">
+
+        <button type="submit" class="btn btn-success col-2">Lưu</button>
+    </form>
+</div>
+<!--Bootstrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

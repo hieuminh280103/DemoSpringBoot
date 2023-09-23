@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <div class="col-sm-6">-->
+<!--            <h3>Hệ thống quản lý sinh viên</h3>-->
+<!--            <h4>Trang chủ</h4>-->
+<!--        </div>-->
+<!--        <div class="col-sm-6">-->
+<!--            Xin chào <b><span sec:authentication="principal.username"></span></b>,&lt;!&ndash;Spring tự cấu hình&ndash;&gt;-->
+<!--            <span sec:authentication="principal.authorities"></span>-->
+<!--            <form action="#" th:action="@{/logout}" method="POST">-->
+<!--                <input type="submit" class="btn btn-danger" value="Đăng xuất">-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <button sec:authorize="hasAnyRole('ADMIN','MANAGER','TEACHER')" class="btn btn-success">Xem</button>-->
+<!--    <button sec:authorize="hasAnyRole('ADMIN','MANAGER')" class="btn btn-warning">Chỉnh xửa</button>-->
+<!--    <button sec:authorize="hasRole('ADMIN')" class="btn btn-danger">Xóa</button>-->
+<!--</div>-->
+<!-- Begin Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active"
+                                        aria-current="page" href="#">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Combo</a></li>
+                <li class="nav-item dropdown"><a
+                        class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false"> Thể loại</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">T-shirt</a></li>
+                        <li><a class="dropdown-item" href="#">Quần short</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">MORE</a></li>
+                    </ul></li>
+                <li class="nav-item"><a class="nav-link disabled">Hết hàng</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Nội dung tìm kiếm"
+                       aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Tìm</button>
+
+                <a sec:authorize="!isAuthenticated()" class="btn btn-primary" style="white-space:nowrap" th:href="@{/authenticateTheUser}">Đăng nhập</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 bg-infor" sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown dropstart"><a
+                            class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"><b><span sec:authentication="principal.username"></span></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Đơn hàng của tôi</a></li>
+                            <li><a class="dropdown-item" href="#">Thông báo</a></li>
+                            <li><a sec:authorize="hasAnyRole('TEACHER','MANAGER','FORMTEACHER')" class="dropdown-item" th:href="@{/user/information}">Thay đổi thông tin</a></li>
+                            <li><a class="dropdown-item" th:href="@{user/change-password}">Đổi mật khẩu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- End Navbar -->
+<!-- Page content -->
+<div class="container">
+    <div class="row">
+        <!-- Menu left -->
+        <div class="col-lg-3">
+            <div class="list-group">
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/create}" href="#" class="list-group-item list-group-item-action " >
+                    Thêm user
+                </a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/list}" class="list-group-item list-group-item-action">Danh sách user</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/class/create}" class="list-group-item list-group-item-action">Thêm một lớp học</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/class/list}" class="list-group-item list-group-item-action">Danh sách các lớp học</a>
+                <a href="#" class="list-group-item list-group-item-action">Dành cho bé</a>
+                <a href="#" class="list-group-item list-group-item-action">Phụ kiện </a>
+                <a href="#" class="list-group-item list-group-item-action">Sneaker</a>
+            </div>
+        </div>
+        <!-- End Menu Left -->
+
+        <!-- Menu right -->
+        <div class="col-lg-9">
+            <!-- Slider -->
+            <div id="carouselExampleIndicators" class="carousel slide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/355007367_3447293392198326_6448484892675935144_n.png?_nc_cat=105&ccb=1-7&_nc_sid=aee45a&_nc_ohc=BINMWNL5ImMAX8IxraM&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQ3XfbOm4ciRL074Uz-b4hZ3nd3UY9dDkX8eiVt7HJ7BQ&oe=64B7BA05" class="d-block w-100" alt="auto">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/355459355_1206943436663628_658110927802468287_n.png?_nc_cat=106&ccb=1-7&_nc_sid=aee45a&_nc_ohc=QzWAVCuEyRYAX8lDxan&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdTg7Hi91ln3BC3CxA3iLRlj3I3yoQJfIcbuAZawbj7aGg&oe=64B791C1" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://scontent.fhan17-1.fna.fbcdn.net/v/t1.15752-9/355387967_1771969276593278_2147783241129740869_n.png?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=tAqDwkCLStkAX_2LTwL&_nc_oc=AQm-HwFA8K1SxbL8U-SB7xd9-7bIIzoIQi4Xnsxwwh9lzx5BEQIMyGFjSGhqEkd99aE&_nc_ht=scontent.fhan17-1.fna&oh=03_AdSaSTq4e-HD8WuHY09XxabAsLPn4BDNTEXxG9wqqxil-w&oe=64B7A7FE" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <!-- End slider -->
+
+            <!-- Product -->
+            <div class="row">
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://cdn.shopify.com/s/files/1/1025/3059/products/MENS_CLASSIC_BLACK_SUIT_EDITED_830x1230_crop_center.jpg.webp?v=1658282060"
+                                         alt="" ></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Classic Suit</a>
+                            </h4>
+                            <h5>50.000</h5>
+                            <p class="card-text">Sản phẩm thoáng mát, có độ bền tốt, giữ
+                                màu sắc tốt.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733;
+                                &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://cdn.shopify.com/s/files/1/1025/3059/products/CHARCOAL_GRAY_SUIT__024_5a43223b-2619-47be-bbb4-53a37322307c_830x1230_crop_center.jpg.webp?v=1679886881"
+                                         alt="" ></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Classic Suit</a>
+                            </h4>
+                            <h5>50.000</h5>
+                            <p class="card-text">Sản phẩm thoáng mát, có độ bền tốt, giữ
+                                màu sắc tốt.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733;
+                                &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://cdn.shopify.com/s/files/1/1025/3059/products/MENS_TAN_EDITED_830x1230_crop_center.jpg.webp?v=1679886150"
+                                         alt="" ></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Classic Suit</a>
+                            </h4>
+                            <h5>50.000</h5>
+                            <p class="card-text">Sản phẩm thoáng mát, có độ bền tốt, giữ
+                                màu sắc tốt.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733;
+                                &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://cdn.shopify.com/s/files/1/1025/3059/products/LOOK_9_020_2c3f48c4-e652-4678-9b8f-e1229600a8c6_830x1230_crop_center.jpg.webp?v=1675722624"
+                                         alt="" ></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Classic Suit</a>
+                            </h4>
+                            <h5>50.000</h5>
+                            <p class="card-text">Sản phẩm thoáng mát, có độ bền tốt, giữ
+                                màu sắc tốt.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">&#9733; &#9733; &#9733;
+                                &#9733; &#9734;</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End product -->
+        </div>
+        <!-- End Menu right -->
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
+
+<%@page import="Model.KhachHang"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BOOKSTORE</title>
+    <!-- add bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+
+
+
+<!-- Footer -->
+<footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="#"
+                                class="nav-link px-2 text-muted">Trang chủ</a></li>
+        <li class="nav-item"><a href="#"
+                                class="nav-link px-2 text-muted">Quy định giao hàng</a></li>
+        <li class="nav-item"><a href="#"
+                                class="nav-link px-2 text-muted">Quy định trả hàng</a></li>
+        <li class="nav-item"><a href="#"
+                                class="nav-link px-2 text-muted">Liên hệ</a></li>
+        <li class="nav-item"><a href="#"
+                                class="nav-link px-2 text-muted">Blogs</a></li>
+    </ul>
+    <p class="text-center text-muted">© 2022 HIEUMINHSHOP.vn, Inc</p>
+</footer>
+<!-- End footer -->
+
+</body>
+</html>

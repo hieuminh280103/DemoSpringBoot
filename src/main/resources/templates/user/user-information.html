@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center"><a th:href="@{/home}">Trang chủ</a></h2>
+    <h3 class="text-center">THÔNG TIN USER CÓ USERNAME : <span th:text="${user.username}"></span></h3>
+    <hr/>
+    <div th:if="${success}" class="alert alert-success">
+        <span th:text="${success}"></span>
+        <a th:href="@{/home}">Quay lại trang chủ</a>
+    </div>
+    <form action="#" th:action="@{/user/update(username=${user.username})}"  method="POST" >
+<!--        ,idStaff=${user.staff.id},idInformation=${user.staff.information.id}-->
+        <table>
+            <tr>
+                <td>Họ và tên</td>
+                <td><input type="text" th:field="${user.staff.information.name}" placeholder="Nhập họ và tên"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td><input type="text" th:field="${user.staff.information.address}" placeholder="Nhập địa chỉ"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+            <tr>
+                <td>Giới tính</td>
+                <td><!--danh dau * de lien ket voi th:object -->
+                    <input type="text" th:field="${user.staff.information.gender}" placeholder="Nhập giới tính"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+            <tr>
+                <td>Số điện thoại</td>
+                <td><!--danh dau * de lien ket voi th:object -->
+                    <input type="tel" th:field="${user.staff.information.phoneNumber}" placeholder="Nhập email"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+            <tr>
+                <td>Sở thích</td>
+                <td><!--danh dau * de lien ket voi th:object -->
+                    <input type="text" th:field="${user.staff.information.hobby}" placeholder="Nhập sở thích"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+            <tr>
+                <td>Ngày sinh</td>
+                <td><!--danh dau * de lien ket voi th:object -->
+                    <input type="date" th:field="${user.staff.information.date}" placeholder="Nhập email"
+                           class="form-control w-100 mb-2"></td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-success col-2">Lưu</button>
+    </form>
+</div>
+<!--Bootstrap-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
